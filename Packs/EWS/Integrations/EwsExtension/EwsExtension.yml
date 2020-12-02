@@ -1,0 +1,180 @@
+commonfields:
+  id: EwsExtension
+  version: -1
+vcShouldKeepItemLegacyProdMachine: false
+name: EwsExtension
+display: O365 - EWS - Extension
+category: Messaging
+description: This integration allows you to manage and interact with Microsoft O365
+  - Exchange Online.
+configuration:
+- display: Exchange Online URL
+  name: url
+  defaultvalue: https://outlook.office365.com
+  type: 0
+  required: true
+- display: Email (Password for basic authentication only)
+  name: credentials
+  type: 9
+  required: false
+- display: Trust any certificate (not secure)
+  name: insecure
+  type: 8
+  required: false
+script:
+  script: ''
+  type: powershell
+  commands:
+  - name: ews-auth-start
+    arguments: []
+    description: OAuth2.0 - Start authorization.
+  - name: ews-auth-complete
+    arguments: []
+    description: OAuth2.0 - Complete authorization.
+  - name: ews-auth-test
+    arguments: []
+    description: OAuth2.0 - Test authorization.
+  - name: ews-junk-rules-get
+    arguments:
+    - name: mailbox
+      required: true
+      description: Mailbox ID.
+    description: Get junk rules in mailbox.
+  - name: ews-junk-rules-set
+    arguments:
+    - name: mailbox
+      required: true
+      description: Mailbox ID.
+    - name: add_blocked_senders_and_domains
+      description: Blocked senders and domains (Comma seprated).
+      isArray: true
+    - name: remove_blocked_senders_and_domains
+      description: Blocked senders and domains (Comma seprated).
+      isArray: true
+    - name: add_trusted_senders_and_domains
+      description: Trusted senders and domains (Comma seprated).
+      isArray: true
+    - name: remove_trusted_senders_and_domains
+      description: Trusted senders and domains (Comma seprated).
+      isArray: true
+    - name: trusted_lists_only
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to trust lists only.
+    - name: contacts_trusted
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to trust contacts.
+    - name: enabled
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to junk rule enabled.
+    description: Set junk rules in account.
+  - name: ews-global-junk-rules-set
+    arguments:
+    - name: mailbox
+      required: true
+      description: Mailbox ID.
+    - name: add_blocked_senders_and_domains
+      description: Blocked senders and domains (Comma seprated).
+      isArray: true
+    - name: remove_blocked_senders_and_domains
+      description: Blocked senders and domains (Comma seprated).
+      isArray: true
+    - name: add_trusted_senders_and_domains
+      description: Trusted senders and domains (Comma seprated).
+      isArray: true
+    - name: remove_trusted_senders_and_domains
+      description: Trusted senders and domains (Comma seprated).
+      isArray: true
+    - name: trusted_lists_only
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to trust lists only.
+    - name: contacts_trusted
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to trust contacts.
+    - name: enabled
+      auto: PREDEFINED
+      predefined:
+      - "true"
+      - "false"
+      description: Whether to junk rule enabled.
+    description: Set junk rules in all managed accounts.
+  - name: ews-message-trace-get
+    arguments:
+    - name: sender_address
+      required: true
+      description: The SenderAddress parameter filters the results by the sender's
+        email address. You can specify multiple values separated by commas.
+    - name: recipient_address
+      required: true
+      description: |
+        The RecipientAddress parameter filters the results by the recipient's email address. You can specify multiple
+        values separated by commas.
+    - name: from_ip
+      required: true
+      description: |
+        The FromIP parameter filters the results by the source IP address. For incoming messages, the value of FromIP
+        is the public IP address of the SMTP email server that sent the message. For outgoing messages from Exchange
+        Online, the value is blank.
+    - name: to_ip
+      required: true
+      description: |
+        The ToIP parameter filters the results by the destination IP address. For outgoing messages, the value of
+        ToIP is the public IP address in the resolved MX record for the destination domain. For incoming messages
+        to Exchange Online, the value is blank.
+    - name: message_id
+      required: true
+      description: |
+        The MessageId parameter filters the results by the Message-ID header field of the message. This value is also
+        known as the Client ID. The format of the Message-ID depends on the messaging server that sent the message.
+        The value should be unique for each message. However, not all messaging servers create values for the
+        Message-ID in the same way. Be sure to include the full Message ID string (which may include angle brackets)
+        and enclose the value in quotation marks (for example,"d9683b4c-127b-413a-ae2e-fa7dfb32c69d@DM3NAM06BG401.Eop-nam06.prod.protection.outlook.com").
+    - name: message_trace_id
+      required: true
+      description: |
+        The MessageTraceId parameter can be used with the recipient address to uniquely identify a message trace
+        and obtain more details. A message trace ID is generated for every message that's processed by the system.
+    - name: page
+      required: true
+      description: |
+        The Page parameter specifies the page number of the results you want to view. Valid input for this parameter
+        is an integer between 1 and 1000. The default value is 1.
+    - name: page_size
+      required: true
+      description: |
+        The PageSize parameter specifies the maximum number of entries per page. Valid input for this parameter is
+        an integer between 1 and 5000. The default value is 1000.
+    - name: start_date
+      required: true
+      description: |
+        The StartDate parameter specifies the start date of the date range.
+        Use the short date format that's defined in the Regional Options settings on the computer where you're
+        running the command. For example, if the computer is configured to use the short date format mm/dd/yyyy,
+        enter 09/01/2018 to specify September 1, 2018. You can enter the date only, or you can enter the date and
+        time of day. If you enter the date and time of day, enclose the value in quotation marks ("), for example, "09/01/2018 5:00 PM".
+    - name: end_date
+      required: true
+      description: |
+        The EndDate parameter specifies the end date of the date range.
+        Use the short date format that's defined in the Regional Options settings on the computer where you're
+        running the command. For example, if the computer is configured to use the short date format mm/dd/yyyy,
+        enter 09/01/2018 to specify September 1, 2018. You can enter the date only, or you can enter the date and
+        time of day. If you enter the date and time of day, enclose the value in quotation marks ("), for example, "09/01/2018 5:00 PM".
+    description: Get message trace.
+  dockerimage: demisto/powershell-ubuntu:7.0.3.12001
+  runonce: false
+fromversion: 5.5.0
